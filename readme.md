@@ -75,3 +75,9 @@ GRANT ALL PRIVILEGES ON AuraTrackDB.* TO 'AuraTrack'@'127.0.0.1' WITH GRANT OPTI
 exit
 #command
 ```
+
+The final dependency is git. To do that, run following command:
+```
+apt install git -y
+```
+Now all dependencies are installed. Lets continue with the AuraTrack Setup.
