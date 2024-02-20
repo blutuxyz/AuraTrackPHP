@@ -43,7 +43,7 @@ apt install nginx -y
 ```
 
 Now you can check if your webserver is reachable, by going to your browser and typing http://yourserver.ip/ .
-If thats not the case you can try running `systemctl apache2 start` or `systemctl nginx start`. 
+If thats not the case you can try running `systemctl start apache2` or `systemctl start nginx`. 
 
 
 Obviously we need to install PHP for the AuraTrack PHP Edition to work. AuraTrack is tested with PHP 8.0, but other PHP versions may also work. Lets continue installing PHP 8.0:
@@ -81,3 +81,92 @@ The final dependency is git. To do that, run following command:
 apt install git -y
 ```
 Now all dependencies are installed. Lets continue with the AuraTrack Setup.
+
+
+### Webserver Setup and AuraTrack download.
+Let's go ahead, and configure our webserver.
+
+We're going to create the directory, where we're going to download AuraTrack:
+```mkdir -p /var/www/auratrack```
+and then we're going to jump into that folder:
+```cd /var/www/auratrack```
+From here we can download the AuraTrack Setup:
+```git clone https://github.com/AuraTrackSetup.git . #The "." at the end means, that the repository is directly downloaded to that folder, without creating another folder called "AuraTrackSetup".```
+Now lets setup the permissions:
+```
+chmod 777 index.php
+chown -R www-data:www-data index.php
+```
+This allows us that the webserver, or that file, can make changes to our server (for example installing packages, connecting to the database etc.). 
+
+#### Now we're going to setup the configuration file for our webserver:
+First of all, we're going to use the editor `nano` to make the webserver config file. If `nano` isn't installed, run this command: `apt install nano -y`:
+
+Before continuing, make sure you disable the default apache config file:
+`a2dissite 000-default.conf`
+Now lets continue:
+```
+nano /etc/apache2/sites-available/auratrack.conf
+```
+Paste following content in there:
+```
+<VirtualHost *:80>
+  ServerName <domain>
+  DocumentRoot "/var/www/auratrack/"
+  
+  AllowEncodedSlashes On
+  
+  php_value upload_max_filesize 100M
+  php_value post_max_size 100M
+  
+  <Directory "/var/www/pterodactyl/">
+    AllowOverride all
+    Require all granted
+  </Directory>
+</VirtualHost>
+```
+**Please note that this configuration is specifically only for HTTP which isn't recommended. To setup HTTPS you need a SSL certificate and some additional config, which you can create with ACME.SH.**
+
+Now let's restart our Apache Webserver (it's recommended to fully reboot your server by using `reboot`)
+```systemctl restart apache2```
+
+Thats it! Now we can continue through the guided setup by AuraTrack.
+To do that, open your favorite web browser and type in `http://yourserver.ip/index.php`. Now you can select what you want to install. In our case, `AuraTrack PHP Edition`. This will check all dependencies and if something is missing, it will help you how to install it or fix it.
+
+
+Wohoo 🎉! Now we have successfully installed the AuraTrack PHP Edition!
+
+
+
+## Development
+Because AuraTrack is open-source, you can change everything you want in the code. AuraTrack is made with HTML, PHP, JavaScript and TailwindCSS. If you only want to edit the PHP, HTML and JS you can simply start, but if you start adding CSS Classes associated with TailwindCSS you need to run these commands.
+Let's start:
+
+First, we have to install the dependencies, again!
+The dependencies are:
+- Node.JS
+- NPM (Should be automatically installed with Node.JS)
+
+To do that, we're going to run following commands:
+The easiest way to install Node.JS is by using NVM. There is a one-liner, for installation:
+```curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash```
+After that we have to load up NVM. To do this, run following:
+```export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm```
+Now we can simply install Node.JS:
+This should work with any Node.JS version, but we're using Node.JS v21:
+```nvm install 21```
+Thats it, no we have installed Node.JS!
+To continue, we have to change the directory to the AuraTrack Installation, by default, it is `/var/www/auratrack/`:
+```
+cd /var/www/auratrack
+```
+
+Let's go ahead and start installing the TailwindCSS CLI:
+```npm install -D tailwindcss```
+or just run `npm install`, because normally there should be the default package.json file.
+Now lets use the TW-CSS CLI to watch and build the files:
+```npx tailwindcss -i ./input.css -o ./output.css --watch``` 
+Now you can start editing your code!
+Please note, that this is just experimental, and you should head over to the official TailwindCSS Documentation: https://tailwindcss.com/docs/installation
+
