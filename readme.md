@@ -87,11 +87,17 @@ Now all dependencies are installed. Lets continue with the AuraTrack Setup.
 Let's go ahead, and configure our webserver.
 
 We're going to create the directory, where we're going to download AuraTrack:
-```mkdir -p /var/www/auratrack```
+```
+mkdir -p /var/www/auratrack
+```
 and then we're going to jump into that folder:
-```cd /var/www/auratrack```
+```
+cd /var/www/auratrack
+```
 From here we can download the AuraTrack Setup:
-```git clone https://github.com/AuraTrackSetup.git . #The "." at the end means, that the repository is directly downloaded to that folder, without creating another folder called "AuraTrackSetup".```
+```
+git clone https://github.com/AuraTrackSetup.git . #The "." at the end means, that the repository is directly downloaded to that folder, without creating another folder called "AuraTrackSetup".
+```
 Now lets setup the permissions:
 ```
 chmod 777 index.php
@@ -128,7 +134,9 @@ Paste following content in there:
 **Please note that this configuration is specifically only for HTTP which isn't recommended. To setup HTTPS you need a SSL certificate and some additional config, which you can create with ACME.SH.**
 
 Now let's restart our Apache Webserver (it's recommended to fully reboot your server by using `reboot`)
-```systemctl restart apache2```
+```
+systemctl restart apache2
+```
 
 Thats it! Now we can continue through the guided setup by AuraTrack.
 To do that, open your favorite web browser and type in `http://yourserver.ip/index.php`. Now you can select what you want to install. In our case, `AuraTrack PHP Edition`. This will check all dependencies and if something is missing, it will help you how to install it or fix it.
@@ -149,7 +157,9 @@ The dependencies are:
 
 To do that, we're going to run following commands:
 The easiest way to install Node.JS is by using NVM. There is a one-liner, for installation:
-```curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash```
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+```
 After that we have to load up NVM. To do this, run following:
 ```export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm```
