@@ -20,3 +20,58 @@ Here is a list of what we're going to install:
 - PHP 8.0
 - A MySQL Server (MariaDB)
 - Git, to clone the AuraTrack PHP repository (not needed if you downloaded it manually or if you move it onto your server via SFTP)
+
+Now we're going to install everything.
+
+First we're going to update your software packages.
+
+```
+apt update 
+apt upgrade -y #The -y means that you will not be asked if you want to continue installing every single package
+```
+This could take about 5-10 minutes depending on your system.
+
+Now we need to install the Web Server.
+You can use Apache or nginx. If you want to install nginx, some of the configuration will be different but overall it should work fine. For now let's stick to Apache.
+
+```
+apt install apache2 -y
+```
+or for nginx:
+```
+apt install nginx -y
+```
+
+Now you can check if your webserver is reachable, by going to your browser and typing http://yourserver.ip/ .
+If thats not the case you can try running `systemctl apache2 start` or `systemctl nginx start`. 
+
+
+Obviously we need to install PHP for the AuraTrack PHP Edition to work. AuraTrack is tested with PHP 8.0, but other PHP versions may also work. Lets continue installing PHP 8.0:
+
+```
+apt install software-properties-common curl apt-transport-https ca-certificates gnupg -y
+LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
+apt update
+apt install php-8.0 php-8.0-{common,cli,gd,mysql,mbstring,bcmath,xml,fpm,curl,zip} -y
+```
+
+This could take a few more minutes.
+Now lets go ahead and install MariaDB. To do that, run following commands:
+```
+curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
+apt update
+apt install mariadb-server -y
+```
+
+Now we can login to our MySQL/MariaDB server and create the database and the user account.
+```
+mysql -u root -p #Press enter
+
+
+CREATE USER 'AuraTrack'@'127.0.0.1' IDENTIFIED BY 'EnterAPassword'; #Change user name and password as you want
+CREATE DATABASE AuraTrackDB; #Here you can change the database name.
+GRANT ALL PRIVILEGES ON AuraTrackDB.* TO 'AuraTrack'@'127.0.0.1' WITH GRANT OPTION; #Also make sure that you change the values as before, otherwise this command will fail.
+#Now you can exit from mysql with the
+exit
+#command
+```
