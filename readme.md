@@ -167,18 +167,27 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 ```
 Now we can simply install Node.JS:
 This should work with any Node.JS version, but we're using Node.JS v21:
-```nvm install 21```
+```
+nvm install 21
+```
 Thats it, no we have installed Node.JS!
+
 To continue, we have to change the directory to the AuraTrack Installation, by default, it is `/var/www/auratrack/`:
 ```
 cd /var/www/auratrack
 ```
 
 Let's go ahead and start installing the TailwindCSS CLI:
-```npm install -D tailwindcss```
+```
+npm install -D tailwindcss
+```
 or just run `npm install`, because normally there should be the default package.json file.
+
 Now lets use the TW-CSS CLI to watch and build the files:
-```npx tailwindcss -i ./input.css -o ./output.css --watch``` 
+```
+npx tailwindcss -i ./input.css -o ./output.css --watch
+``` 
 Now you can start editing your code!
+
 Please note, that this is just experimental, and you should head over to the official TailwindCSS Documentation: https://tailwindcss.com/docs/installation
 
