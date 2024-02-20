@@ -83,7 +83,7 @@ apt install git -y
 Now all dependencies are installed. Lets continue with the AuraTrack Setup.
 
 
-### Webserver Setup and AuraTrack download.
+### Webserver Setup and AuraTrack download
 Let's go ahead, and configure our webserver.
 
 We're going to create the directory, where we're going to download AuraTrack:
